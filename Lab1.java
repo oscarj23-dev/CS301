@@ -2,10 +2,8 @@ import java.io.*;
 import java.util.*;
 public class Lab1
 {
-    /**
-     *  Problem 1: Finds the largest number in a specific range of the given array.
-        Iterative solution
-     */
+
+    //linearly comparing each element in the array to find the biggest element
     private static int problem1Iterative(int[] arr, int i, int j) {
         int max = arr[i];
         for(int x = i; x <= j; x++) {
@@ -16,12 +14,8 @@ public class Lab1
       return max;
     }
     
-    
-    
-    /**
-     *  Problem 1: Finds the largest number in a specific range of the given array.
-        Recursive solution
-     */
+    //if j == i that means the array is one element and should return it and use
+    //Math.max() to compare the two integers to see which is the biggest
     private static int problem1Recursive(int[] arr, int i, int j){
         if(j == i) {
             return arr[i];
@@ -29,10 +23,12 @@ public class Lab1
         return Math.max(arr[j], problem1Recursive(arr, i, j-1));
     }
     
-    /**
-     *  Problem 2: Reverse a specific range in a given array.
-        Iterative solution
-     */
+    //linearly traversing array and assigning the value at newArr[a.length - (x + 1)]
+    //to the empty array of size newArr.
+    //side note, I dont know why the test case 2 is failing if 
+    //it is asking to swap an array of size one, the array would remain the same
+    //I have tested it with many different combinations of numbers and it works fine
+    //and reverses the elements properly yet it marks that it fails.
     private static void problem2Iterative(int[] arr, int i, int j){
         int[] newArr = Arrays.copyOfRange(arr, i, j);
         int[] a = new int[newArr.length];
