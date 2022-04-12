@@ -1,9 +1,13 @@
-import java.io.*;
+// Oscar Maldonado
+// 4/09/22
+// Lab1.java
+// CS 301
 import java.util.*;
 public class Lab1
 {
 
-    //linearly comparing each element in the array to find the biggest element
+    //storing the value i in max and then iteratively comparing each element 
+    //in the array to find the biggest element
     private static int problem1Iterative(int[] arr, int i, int j) {
         int max = arr[i];
         for(int x = i; x <= j; x++) {
@@ -23,39 +27,42 @@ public class Lab1
         return Math.max(arr[j], problem1Recursive(arr, i, j-1));
     }
     
-    //linearly traversing array and assigning the value at newArr[a.length - (x + 1)]
-    //to the empty array of size newArr.
-    //side note, I dont know why the test case 2 is failing if 
-    //it is asking to swap an array of size one, the array would remain the same
-    //I have tested it with many different combinations of numbers and it works fine
-    //and reverses the elements properly yet it marks that it fails.
-    private static void problem2Iterative(int[] arr, int i, int j){
-        int[] newArr = Arrays.copyOfRange(arr, i, j);
-        int[] a = new int[newArr.length];
-        
-      
-        for(int x = 0; x < a.length; x++) {
-            a[x] = newArr[a.length - (x + 1)];
+    //linearly traversing array and assigning the value at arr[i] into a temp variable
+    //and assigning arr[i] to arr[j] and finally assigning the temp to arr[j]
+    private static void problem2Iterative(int[] arr, int i, int j) {
+        int temp = 0;
+        while (i < j) {
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
         }
-        //System.out.println(Arrays.toString(a));
     }    
     
-     /**
-     *  Problem 2: Reverse a specific range in a given array.
-        Recursive solution
-     */
+    //recursively traversing array and assigning the value at arr[i] into a temp variable
+    //and assigning arr[i] to arr[j] and finally assigning the temp to arr[j] by advancing
+    //the position of i by one each recursive call and decrementing the position of j
+    //by one so it gets the next value in line
     private static void problem2Recursive(int[] arr, int i, int j)
     {
-        //implement me!   
+        int temp = 0;
+        if(i > j) {
+            return;
+        } else {
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            problem2Recursive(arr, i+1, j-1);
+        } 
     }
     
-    /**
-     *  Swap the items at index i and j of the given array.
-        Helper function.
-     */
-    private static void swap(int[] arr, int i, int j)
-    {
-        //implement me!     
+    //swap assigns the value at arr[i] into a temp variable
+    //and assigning arr[i] to arr[j] and finally assigning the temp to arr[j] 
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;     
     }
     // ---------------------------------------------------------------------
     // Do not change any of the code below!
