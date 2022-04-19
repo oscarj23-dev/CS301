@@ -3,8 +3,7 @@
 // Lab1.java
 // CS 301
 import java.util.*;
-public class Lab1
-{
+public class Lab1 {
 
     //storing the value i in max and then iteratively comparing each element 
     //in the array to find the biggest element
@@ -44,8 +43,7 @@ public class Lab1
     //and assigning arr[i] to arr[j] and finally assigning the temp to arr[j] by advancing
     //the position of i by one each recursive call and decrementing the position of j
     //by one so it gets the next value in line
-    private static void problem2Recursive(int[] arr, int i, int j)
-    {
+    private static void problem2Recursive(int[] arr, int i, int j) {
         int temp = 0;
         if(i > j) {
             return;
