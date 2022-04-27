@@ -12,6 +12,7 @@ public class Lab1 {
         for(int x = i; x <= j; x++) {
             if(arr[x] >= max) {
                 max = arr[x];
+                
             }
         }
       return max;
