@@ -1,73 +1,177 @@
+// Oscar Maldonado
+// May, 18th, 2022
+// Lab 5
+// CS301
+
 import java.io.*;
 import java.util.*;
 
-public class Lab5
-{
-
+public class Lab5 {
     /**
      *  Problem 1: Determine the number of nodes based on their number of children.
         Iterative Solution
     */
-    private static int[] problem1Iterative(Node root)
-    {
-        // Implement me!
-        return new int[] {
-            -1, // nodes with 0 children
-            -1, // nodes with 1 child
-            -1  // nodes with 2 children
-        };
+    private static int[] problem1Iterative(Node root) {
+		// checks if tree exists
+		if(root == null) {
+			return new int[] {-1,-1,-1};
+		}
+
+		// create a new int arr size 3 for the node counter, and a stack to 
+		// push the nodes onto
+		int[] arr = new int[3];
+		Stack<Node> s = new Stack<Node>();
+		Node curr = root;
+		s.push(curr);
+
+		// while the stack is not empty, go through the if-else if chain to determine
+		// whether the node is a leaf, full, or half node.
+		while(!s.isEmpty()) {
+			if(curr.left == null && curr.right == null) {
+				curr = s.pop();
+				arr[0]++;
+			} else if(curr.left != null && curr.right != null) {
+				s.push(curr.left);
+				s.push(curr.right);
+				arr[2]++;
+				curr = s.pop();
+			} else if(curr.left != null && curr.right == null) {
+				s.push(curr.left);
+				arr[1]++;
+				curr = s.pop();
+			} else if(curr.left == null && curr.right != null) {
+				s.push(curr.right);
+				arr[1]++;
+				curr = s.pop();
+			} else if(curr == root) {
+				s.pop();
+			}
+		}
+       	return arr;
     }
-
-
 
     /**
      *  Problem 1: Determine the number of nodes based on their number of children.
         Recursive Solution
     */
     private static int[] problem1Recursive(Node root) {
-        int[] arr = {-1, -1, -1};
+        int[] arr = {0, 0, 0}; 
+		
+		// create arrays for left and right subtree
+        int[] left = {0, 0, 0}; // see how they are used below
+        int[] right = {0, 0, 0};
+		
+		// check if tree exists
         if(root == null) {
+            return new int[] {-1, -1, -1};
+		}
+		
+		// essentially the second basecase, check if the node is a leaf,
+		// if so increment the proper array index
+        if(root.left == null && root.right == null) {
+            arr[0]++;
             return arr;
         }
-        int[] arr1 = problem1Recursive(root.left);
-        int full = -1;
-        int half = -1;
-        int leaf = -1;
-        if(root.left != null && root.right != null) { // if this condition passes it means the 
-                                                      // node has two children.
-            arr[0] = full++;
-        } else if(root.left == null && root.right == null) { // if this condition passes it means the 
-                                                            // node has no children.
-            arr[1] = leaf++;
-        } else { // if this condition is reached it means the the node had neither two 
-                 // children or no children, so it means it had one child
-            arr[2] = half++;
+
+		// go through the if-else if chain to determine
+		// whether the node is a leaf, full, or half node.
+        if(root.left != null && root.right != null) {
+            left = problem1Recursive(root.left); //store the returning array
+            right = problem1Recursive(root.right); //store the returning array
+            arr[2]++;
+        } else if(root.left != null && root.right == null) {
+            arr[1]++;
+            left = problem1Recursive(root.left); //store the returning array
+        } else if(root.left == null && root.right != null) {
+            arr[1]++;
+            right = problem1Recursive(root.right); //store the returning array
         }
-        int[] arr2 = problem1Recursive(root.right);
-        int[] arr3 = new int[3];
-        
-        return arr3;
+        // now combine the values that got returned from the recursive calls
+        arr[0] += left[0] + right[0];
+        arr[1] += left[1] + right[1];
+        arr[2] += left[2] + right[2];
+        return arr;
     }
     
     /**
      *  Problem 2: Determine the maximum distance from the root to a leaf.
         Iterative Solution
-    */
+	*/
+	
+	// in essence what I tried doing with this method is what I did with problem1iter
+	// I create two stacks for both subtrees and iterate through the tree
+	// if its a leaf, increment the   counter cause a leaf node's height is 0
+	// if it is a half, increment the counter again and traverse down the node that
+	// is not null, and if it is a full, increment the counter and pursue down both 
+	// paths untill null is how I wanted this method to work but I ran out of time
+	// so this is as far as I got.
     private static int problem2Iterative(Node root) {
-        if(root == null) {
-            return -1;
-        }
-        int h1 = -1;
-        int h2 = -1;
-        Node current = root;
+		if(root == null) {
+			return -1;
+		}
 
-        return -1;
+		Stack<Node> left = new Stack<>();
+		Stack<Node> right = new Stack<>();
+		Node leftSub = root.left;
+		Node rightSub = root.right;
+		int leftTree = -1;
+		int rightTree = -1;
+		left.push(leftSub);
+		right.push(rightSub);
+
+		while(!left.isEmpty()) {
+			if(leftSub.left == null && leftSub.right == null) {
+				leftSub = left.pop();
+				leftTree++;
+			} else if(leftSub.left != null && leftSub.right != null) {
+				left.push(leftSub.left);
+				left.push(leftSub.right);
+				leftSub = left.pop();
+				leftTree++;
+			} else if(leftSub.left != null && leftSub.right == null) {
+				left.push(leftSub.left);
+				leftSub = left.pop();
+				leftTree++;
+			} else if(leftSub.left == null && leftSub.right != null) {
+				left.push(leftSub.right);
+				leftSub = left.pop();
+				leftTree++;
+			} else if(leftSub == root) {
+				left.pop();
+			}
+		}
+		while(!right.isEmpty()) {
+			if(rightSub.left == null && rightSub.right == null) {
+				rightSub = right.pop();
+				rightTree++;
+			} else if(rightSub.left != null && rightSub.right != null) {
+				right.push(rightSub.left);
+				right.push(rightSub.right);
+				rightSub = right.pop();
+				rightTree++;
+			} else if(rightSub.left != null && rightSub.right == null) {
+				right.push(rightSub.left);
+				rightSub = right.pop();
+				rightTree++;
+			} else if(rightSub.left == null && rightSub.right != null) {
+				right.push(rightSub.right);
+				rightSub = right.pop();
+				rightTree++;
+			} else if(rightSub == root) {
+				right.pop();
+			}
+		}
+       	return Math.max(leftTree, rightTree);
     }
     
     /**
      *  Problem 2: Determine the maximum distance from the root to a leaf.
         Recursive Solution
-    */
+	*/
+	// basically a tree traversal, add 1 with every method call, 
+	// basecase returns -1 because that would mean the tree does not exist
+	// if it does exist 1 because a leaf's height is 0, and recursively
+	// repeat this process
     private static int problem2Recursive(Node root) {
         if(root == null) {
             return -1;
