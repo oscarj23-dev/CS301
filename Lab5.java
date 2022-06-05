@@ -9,8 +9,9 @@ import java.util.*;
 public class Lab5 {
     /**
      *  Problem 1: Determine the number of nodes based on their number of children.
-        Iterative Solution
-    */
+		Iterative Solution
+	*/
+
     private static int[] problem1Iterative(Node root) {
 		// checks if tree exists
 		if(root == null) {
